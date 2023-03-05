@@ -1,6 +1,8 @@
 import React from 'react';
 import './App.css';
 import {NotesList} from "./Componets/NotesList/NotesList";
+import {useSelector} from "react-redux";
+import {AppRootStateType} from "./redux/store";
 
 
 export type NoteItemType = {
@@ -10,18 +12,7 @@ export type NoteItemType = {
 }
 
 function App() {
-  const notesPool: Array<NoteItemType> = [
-    {
-      id: 'f87',
-      title: 'Пароль от почты',
-      description: '32321qwerty',
-    },
-    {
-      id: 'cc1',
-      title: 'Даты дней рожденья друзей',
-      description: 'Коля 05.11.1990, Вася 23.06.1995',
-    },
-  ]
+  const notesPool = useSelector<AppRootStateType, Array<NoteItemType>>(store => store.notesReducer)
 
   return (
     <div className="App">
