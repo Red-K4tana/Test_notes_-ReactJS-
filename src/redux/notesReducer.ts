@@ -37,7 +37,9 @@ export const notesReducer = (state = initialState, action: NotesActionType): Not
 			return state.filter(note => note.id !== action.noteID)
 		}
 		case NOTES_ACTION_TYPE_NAME.UPDATE_NOTES: {
-			return state
+			return state.map(note => note.id === action.notesID
+				? {...note, title: action.title, description: action.description}
+				: note)
 		}
 		default: {
 			return state
