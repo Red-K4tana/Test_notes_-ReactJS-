@@ -11,6 +11,8 @@ export type NoteItemType = {
   description: string,
 }
 
+export const ID_localStorage = 'a1';
+
 function App() {
   const notesPool = useSelector<AppRootStateType, Array<NoteItemType>>(store => store.notesReducer)
 

@@ -1,10 +1,10 @@
-import React from 'react';
-import {NoteItemType} from "../../App";
+import React, {useEffect} from 'react';
+import {ID_localStorage, NoteItemType} from "../../App";
 import {Note} from "../Note/Note";
 import {Button} from "../Button/Button";
 import {useAppDispatch} from "../../redux/store";
 import {v1} from "uuid";
-import {addNoteAC} from "../../redux/notesReducer";
+import {addNoteAC, addNoteTC, setNotesTC} from "../../redux/notesReducer";
 
 type NotesListPropsType = {
 	notes: Array<NoteItemType>
@@ -13,6 +13,12 @@ type NotesListPropsType = {
 
 export const NotesList = (props: NotesListPropsType) => {
 	const dispatch = useAppDispatch()
+
+
+	useEffect(()=> {
+		dispatch(setNotesTC())
+	},[])
+
 	const notesForRender: Array<NoteItemType> = props.notes
 
 	const createNewNote = () => {
@@ -22,7 +28,7 @@ export const NotesList = (props: NotesListPropsType) => {
 			title: 'Title',
 			description: 'Note text',
 		}
-		dispatch(addNoteAC(newNote))
+		dispatch(addNoteTC(newNote))
 	}
 
 	return (

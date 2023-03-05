@@ -1,7 +1,7 @@
-import {applyMiddluware, combineReducers, createStore} from "redux";
 import {NotesActionType, notesReducer} from "./notesReducer";
-import thunkMiddleware, {ThunkDispatch} from "redux-thunk";
 import {useDispatch} from "react-redux";
+import {applyMiddleware, combineReducers, createStore} from "redux";
+import thunkMiddleware, {ThunkDispatch} from 'redux-thunk';
 
 
 export const rootReducer = combineReducers({

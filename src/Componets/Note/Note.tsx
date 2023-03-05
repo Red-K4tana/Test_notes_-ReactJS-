@@ -4,7 +4,7 @@ import {EditableTitle} from "../EditableField/EditableTitle";
 import {EditableDescription} from "../EditableField/EditableDescription";
 import {Button} from "../Button/Button";
 import {useAppDispatch} from "../../redux/store";
-import {removeNoteAC, updateNotesAC} from "../../redux/notesReducer";
+import {removeNoteAC, removeNoteTC, updateNotesAC} from "../../redux/notesReducer";
 
 
 export type NotePropsType = {
@@ -31,7 +31,7 @@ export const Note = (props: NotePropsType) => {
 		setEditMode(true)
 	}
 	const removeNote = () => {
-		dispatch(removeNoteAC(props.id))
+		dispatch(removeNoteTC(props.id))
 	}
 
 	return (

@@ -1,4 +1,6 @@
 import {v1} from "uuid";
+import {AppRootStateType, TypedDispatch} from "./store";
+import {ID_localStorage} from "../App";
 
 export type NoteItemType = {
 	id: string,
@@ -7,46 +9,7 @@ export type NoteItemType = {
 }
 export type NoteStateType = Array<NoteItemType>
 
-const id_1 = v1();
-const id_2 = v1();
-
-
-const initialState: Array<NoteItemType> = [
-	{
-		id: id_1,
-		title: 'Пароль от почты',
-		description: '32321qwerty',
-	},
-	{
-		id: id_2,
-		title: 'Даты дней рожденья друзей',
-		description: 'Коля 05.11.1990, Вася 23.06.1995',
-	},
-]
-
-
-export const notesReducer = (state = initialState, action: NotesActionType): NoteStateType => {
-	switch (action.type) {
-		case NOTES_ACTION_TYPE_NAME.SET_NOTES: {
-			return state
-		}
-		case NOTES_ACTION_TYPE_NAME.ADD_NOTES_ITEM: {
-			return [...state, action.note]
-		}
-		case NOTES_ACTION_TYPE_NAME.REMOVE_NOTES_ITEM: {
-			return state.filter(note => note.id !== action.noteID)
-		}
-		case NOTES_ACTION_TYPE_NAME.UPDATE_NOTES: {
-			return state.map(note => note.id === action.notesID
-				? {...note, title: action.title, description: action.description}
-				: note)
-		}
-		default: {
-			return state
-		}
-	}
-}
-
+// NOTES ACTIONS =======================================================================================================
 export enum NOTES_ACTION_TYPE_NAME {
 	SET_NOTES = 'SET_NOTES',
 	ADD_NOTES_ITEM = 'ADD_NOTES_ITEM',
@@ -79,7 +42,7 @@ export type updateNotesActionType = {
 	description: string,
 }
 
-export const setNotesAC = (notesID: string, notes: Array<NoteItemType>): setNotesActionType => {
+export const setNotesAC = (notes: Array<NoteItemType>): setNotesActionType => {
 	return {type: NOTES_ACTION_TYPE_NAME.SET_NOTES, notes} as const
 }
 export const addNoteAC = (note: NoteItemType): addNoteActionType => {
@@ -90,4 +53,70 @@ export const removeNoteAC = (noteID: string): removeNoteActionType => {
 }
 export const updateNotesAC = (noteID: string, title: string, description: string): updateNotesActionType => {
 	return {type: NOTES_ACTION_TYPE_NAME.UPDATE_NOTES, notesID: noteID, title, description} as const
+}
+
+// NOTES THUNK-CREATORS ================================================================================================
+export const addNoteTC = (note: NoteItemType) => (dispatch: TypedDispatch, getState: () => AppRootStateType) => {
+	dispatch(addNoteAC(note))
+	const state = getState()
+	const stateStringify = JSON.stringify(state)
+
+	localStorage.setItem(ID_localStorage, stateStringify)
+
+}
+export const removeNoteTC = (noteID: string) => (dispatch: TypedDispatch, getState: () => AppRootStateType) => {
+	dispatch(removeNoteAC(noteID))
+	const state = getState()
+	const stateStringify = JSON.stringify(state)
+
+	localStorage.setItem(ID_localStorage, stateStringify)
+
+}
+export const setNotesTC = () => (dispatch: TypedDispatch) => {
+	const stateFromLocalStorage: any = localStorage.getItem(ID_localStorage)
+	/*console.log('from ls ', JSON.parse(stateFromLocalStorage).notesReducer)*/
+
+	// если в localStorage пусто, то отправляем пустой массив в редьюсер
+	if (stateFromLocalStorage === null) {
+		dispatch(setNotesAC([]))
+	} else {
+		dispatch(setNotesAC(JSON.parse(stateFromLocalStorage).notesReducer))
+	}
+
+
+}
+
+// NOTES REDUCER =======================================================================================================
+
+const initialState: Array<NoteItemType> = []
+
+export const notesReducer = (state = initialState, action: NotesActionType): NoteStateType => {
+	switch (action.type) {
+		case NOTES_ACTION_TYPE_NAME.SET_NOTES: {
+			const baseNote: NoteItemType = {
+				id: 'id_1',
+				title: 'Base note',
+				description: 'Base note description',
+			};
+			const baseNoteBefore = action.notes.filter(note => note.id === baseNote.id)
+
+
+
+			return [baseNote, ...action.notes]
+		}
+		case NOTES_ACTION_TYPE_NAME.ADD_NOTES_ITEM: {
+			return [...state, action.note]
+		}
+		case NOTES_ACTION_TYPE_NAME.REMOVE_NOTES_ITEM: {
+			return state.filter(note => note.id !== action.noteID)
+		}
+		case NOTES_ACTION_TYPE_NAME.UPDATE_NOTES: {
+			return state.map(note => note.id === action.notesID
+				? {...note, title: action.title, description: action.description}
+				: note)
+		}
+		default: {
+			return state
+		}
+	}
 }
