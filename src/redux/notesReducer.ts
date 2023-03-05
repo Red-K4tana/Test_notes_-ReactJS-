@@ -73,7 +73,8 @@ export type removeNoteActionType = {
 export type updateNotesActionType = {
 	type: NOTES_ACTION_TYPE_NAME.UPDATE_NOTES,
 	notesID: string,
-	note: NoteItemType,
+	title: string,
+	description: string,
 }
 
 export const setNotesAC = (notesID: string, notes: Array<NoteItemType>): setNotesActionType => {
@@ -85,6 +86,6 @@ export const addNoteAC = (note: NoteItemType): addNoteActionType => {
 export const removeNoteAC = (noteID: string): removeNoteActionType => {
 	return {type: NOTES_ACTION_TYPE_NAME.REMOVE_NOTES_ITEM, noteID} as const
 }
-export const updateNotesAC = (noteID: string, note: NoteItemType): updateNotesActionType => {
-	return {type: NOTES_ACTION_TYPE_NAME.UPDATE_NOTES, notesID: noteID, note} as const
+export const updateNotesAC = (noteID: string, title: string, description: string): updateNotesActionType => {
+	return {type: NOTES_ACTION_TYPE_NAME.UPDATE_NOTES, notesID: noteID, title, description} as const
 }

@@ -4,13 +4,13 @@ import style from './EditableFields.module.css';
 type EditableTitlePropsType = {
 	editMode: boolean
 	description: string
-
+	setDescriptionCallback: (description: string)=> void
 }
 
 export const EditableDescription = (props: EditableTitlePropsType) => {
-	const [description, setDescription] = useState(props.description)
+
 	const changeDescription = (e: ChangeEvent<HTMLTextAreaElement>) => {
-		setDescription(e.currentTarget.value)
+		props.setDescriptionCallback(e.currentTarget.value)
 	}
 
 
@@ -19,7 +19,7 @@ export const EditableDescription = (props: EditableTitlePropsType) => {
 			?
 			<div className={style.textarea_description}>
 				<textarea id={'textarea'}
-				          value={description}
+				          value={props.description}
 				          onChange={changeDescription}>
 				</textarea></div>
 			:

@@ -4,7 +4,7 @@ import {EditableTitle} from "../EditableField/EditableTitle";
 import {EditableDescription} from "../EditableField/EditableDescription";
 import {Button} from "../Button/Button";
 import {useAppDispatch} from "../../redux/store";
-import {removeNoteAC} from "../../redux/notesReducer";
+import {removeNoteAC, updateNotesAC} from "../../redux/notesReducer";
 
 
 export type NotePropsType = {
@@ -18,11 +18,14 @@ export const Note = (props: NotePropsType) => {
 	const dispatch = useAppDispatch()
 	const [editMode, setEditMode] = useState(false)
 
+	//=======================================================
+	const [description, setDescription] = useState(props.description)
+	const [title, setTitle] = useState(props.title)
+	//=======================================================
+
 	const saveNote = () => {
 		setEditMode(false)
-
-		//dispatch
-
+		dispatch(updateNotesAC(props.id, title, description))
 	}
 	const editNote = () => {
 		setEditMode(true)
@@ -41,8 +44,8 @@ export const Note = (props: NotePropsType) => {
 					<Button name={'Edit'} callback={editNote} />
 			}
 			<Button name={'Del'} callback={removeNote} />
-			<EditableTitle editMode={editMode} title={props.title}/>
-			<EditableDescription editMode={editMode} description={props.description}/>
+			<EditableTitle editMode={editMode} title={title} setTitleCallback={setTitle}/>
+			<EditableDescription editMode={editMode} description={description} setDescriptionCallback={setDescription}/>
 		</div>
 	);
 };

@@ -4,22 +4,22 @@ import React, {ChangeEvent, useState} from 'react';
 type EditableTitlePropsType = {
 	editMode: boolean
 	title: string
-
+	setTitleCallback: (title: string) => void
 }
 
 export const EditableTitle = (props: EditableTitlePropsType) => {
 
 
-	const [title, setTitle] = useState(props.title)
+
 	const changeTitle = (e: ChangeEvent<HTMLInputElement>) => {
-		setTitle(e.currentTarget.value)
+		props.setTitleCallback(e.currentTarget.value)
 	}
 
 	return (
 		props.editMode
 			?
 			<input className={'inputEdit'}
-			       value={title}
+			       value={props.title}
 			       onChange={changeTitle}
 			       autoFocus={true}
 			/>
