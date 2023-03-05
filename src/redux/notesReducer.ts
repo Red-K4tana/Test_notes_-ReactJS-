@@ -98,6 +98,7 @@ export const notesReducer = (state = initialState, action: NotesActionType): Not
 				title: 'Base note',
 				description: 'Base note description',
 			};
+
 			const baseNoteBefore = action.notes.filter(note => note.id === baseNote.id)
 
 
