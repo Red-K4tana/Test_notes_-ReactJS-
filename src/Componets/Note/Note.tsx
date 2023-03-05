@@ -3,6 +3,8 @@ import style from './Note.module.css'
 import {EditableTitle} from "../EditableField/EditableTitle";
 import {EditableDescription} from "../EditableField/EditableDescription";
 import {Button} from "../Button/Button";
+import {useAppDispatch} from "../../redux/store";
+import {removeNoteAC} from "../../redux/notesReducer";
 
 
 export type NotePropsType = {
@@ -13,6 +15,7 @@ export type NotePropsType = {
 
 
 export const Note = (props: NotePropsType) => {
+	const dispatch = useAppDispatch()
 	const [editMode, setEditMode] = useState(false)
 
 	const saveNote = () => {
@@ -25,7 +28,7 @@ export const Note = (props: NotePropsType) => {
 		setEditMode(true)
 	}
 	const removeNote = () => {
-
+		dispatch(removeNoteAC(props.id))
 	}
 
 	return (

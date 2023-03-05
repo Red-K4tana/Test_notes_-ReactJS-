@@ -34,7 +34,7 @@ export const notesReducer = (state = initialState, action: NotesActionType): Not
 			return [...state, action.note]
 		}
 		case NOTES_ACTION_TYPE_NAME.REMOVE_NOTES_ITEM: {
-			return state
+			return state.filter(note => note.id !== action.noteID)
 		}
 		case NOTES_ACTION_TYPE_NAME.UPDATE_NOTES: {
 			return state
@@ -68,7 +68,7 @@ export type addNoteActionType = {
 }
 export type removeNoteActionType = {
 	type: NOTES_ACTION_TYPE_NAME.REMOVE_NOTES_ITEM,
-	notesID: string,
+	noteID: string,
 }
 export type updateNotesActionType = {
 	type: NOTES_ACTION_TYPE_NAME.UPDATE_NOTES,
@@ -76,15 +76,15 @@ export type updateNotesActionType = {
 	note: NoteItemType,
 }
 
-export const setNotesAC = (notesID: string, notes: Array<NoteItemType>): any => {
+export const setNotesAC = (notesID: string, notes: Array<NoteItemType>): setNotesActionType => {
 	return {type: NOTES_ACTION_TYPE_NAME.SET_NOTES, notes} as const
 }
-export const addNoteAC = (note: NoteItemType): any => {
+export const addNoteAC = (note: NoteItemType): addNoteActionType => {
 	return {type: NOTES_ACTION_TYPE_NAME.ADD_NOTES_ITEM, note} as const
 }
-export const removeNoteAC = (notesID: string): any => {
-	return {type: NOTES_ACTION_TYPE_NAME.REMOVE_NOTES_ITEM, notesID} as const
+export const removeNoteAC = (noteID: string): removeNoteActionType => {
+	return {type: NOTES_ACTION_TYPE_NAME.REMOVE_NOTES_ITEM, noteID} as const
 }
-export const updateNotesAC = (notesID: string, note: NoteItemType): any => {
-	return {type: NOTES_ACTION_TYPE_NAME.UPDATE_NOTES, notesID, note} as const
+export const updateNotesAC = (noteID: string, note: NoteItemType): updateNotesActionType => {
+	return {type: NOTES_ACTION_TYPE_NAME.UPDATE_NOTES, notesID: noteID, note} as const
 }
