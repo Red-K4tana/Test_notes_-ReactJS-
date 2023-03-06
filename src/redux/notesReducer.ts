@@ -113,8 +113,12 @@ export const notesReducer = (state = initialState, action: NotesActionType): Not
 	switch (action.type) {
 		case NOTES_ACTION_TYPE_NAME.SET_NOTES: {
 			const notesForRender = action.notes.filter(note => note.id !== 'id_1')
-			console.log('action.notes reducer ', action.notes.filter(note => note.id !== 'id_1'))
-			return [...state, ...notesForRender]
+			/*console.log('action.notes reducer ', action.notes.filter(note => note.id !== 'id_1'))*/
+			if (action.notes.findIndex(note => note.id === 'id_1') !== -1) {
+				return [...notesForRender]
+			} else {
+				return [...state, ...notesForRender]
+			}
 		}
 		case NOTES_ACTION_TYPE_NAME.ADD_NOTES_ITEM: {
 			return [...state, action.note]
