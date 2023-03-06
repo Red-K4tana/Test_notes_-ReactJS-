@@ -57,25 +57,23 @@ export const updateNoteAC = (noteID: string, title: string, description: string)
 }
 
 // NOTES THUNK-CREATORS ================================================================================================
+// добавление заметки
 export const addNoteTC = (note: NoteItemType) => (dispatch: TypedDispatch, getState: () => AppRootStateType) => {
 	dispatch(addNoteAC(note))
-	const state = getState()
-	const stateStringify = JSON.stringify(state)
-
-	localStorage.setItem(ID_localStorage, stateStringify)
-}
-export const removeNoteTC = (noteID: string) => (dispatch: TypedDispatch, getState: () => AppRootStateType) => {
-	dispatch(removeNoteAC(noteID))
-	const state = getState()
-	const stateStringify = JSON.stringify(state)
-	localStorage.setItem(ID_localStorage, stateStringify)
-
-}
-export const updateNoteTC = (noteID: string, title: string, description: string) => (dispatch: TypedDispatch, getState: () => AppRootStateType) => {
-  dispatch(updateNoteAC(noteID, title, description))
-
 	localStorage.setItem(ID_localStorage, JSON.stringify(getState()))
 }
+// удаление заметки
+export const removeNoteTC = (noteID: string) => (dispatch: TypedDispatch, getState: () => AppRootStateType) => {
+	dispatch(removeNoteAC(noteID))
+	localStorage.setItem(ID_localStorage, JSON.stringify(getState()))
+}
+// изменение заметки
+export const updateNoteTC = (noteID: string, title: string, description: string) =>
+	(dispatch: TypedDispatch, getState: () => AppRootStateType) => {
+  dispatch(updateNoteAC(noteID, title, description))
+	localStorage.setItem(ID_localStorage, JSON.stringify(getState()))
+}
+// наполнение state из localStorage
 export const setNotesTC = () => (dispatch: TypedDispatch, getState: () => AppRootStateType) => {
 	const stateFromLocalStorage: any = localStorage.getItem(ID_localStorage) // достал state из localStorage
 
@@ -84,8 +82,8 @@ export const setNotesTC = () => (dispatch: TypedDispatch, getState: () => AppRoo
 		dispatch(setNotesAC([]))
 	} else {
 		dispatch(setNotesAC(JSON.parse(stateFromLocalStorage).notesReducer)) // отправил state в reducer
-
-		localStorage.setItem(ID_localStorage, JSON.stringify(getState())) // получил state из reducer и отправил его в localStorage
+		// получил state из reducer и отправил его в localStorage
+		localStorage.setItem(ID_localStorage, JSON.stringify(getState()))
 	}
 }
 
