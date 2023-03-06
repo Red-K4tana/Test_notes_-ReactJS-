@@ -75,36 +75,25 @@ export const updateNoteTC = (noteID: string, title: string, description: string)
   dispatch(updateNoteAC(noteID, title, description))
 
 	localStorage.setItem(ID_localStorage, JSON.stringify(getState()))
-	/*const JSONStateFromLocalStorage: any = localStorage.getItem(ID_localStorage)
-	const ArrayStateFromLocalStorage: NoteStateType = JSON.parse(JSONStateFromLocalStorage).notesReducer
-
-	const newArray = ArrayStateFromLocalStorage.map(note => note.id === noteID
-		? {...note, title: title, description: description}
-		: note)
-
-	const newJSONArray = JSON.stringify(newArray)
-	localStorage.setItem(ID_localStorage, newJSONArray)*/
 }
 export const setNotesTC = () => (dispatch: TypedDispatch, getState: () => AppRootStateType) => {
-	const stateFromLocalStorage: any = localStorage.getItem(ID_localStorage) // достал state из LS
-	console.log('from ls ', JSON.parse(stateFromLocalStorage).notesReducer)
+	const stateFromLocalStorage: any = localStorage.getItem(ID_localStorage) // достал state из localStorage
 
-	// если в localStorage пусто, то отправляем пустой массив в редьюсер
+	// если в localStorage пусто, то отправляем пустой массив в reducer
 	if (stateFromLocalStorage === null) {
 		dispatch(setNotesAC([]))
 	} else {
 		dispatch(setNotesAC(JSON.parse(stateFromLocalStorage).notesReducer)) // отправил state в reducer
-		/*console.log('из LS thunk ', JSON.parse(stateFromLocalStorage).notesReducer)*/
 
-		localStorage.setItem(ID_localStorage, JSON.stringify(getState())) // получил state из reducer и отправил его в LS
+		localStorage.setItem(ID_localStorage, JSON.stringify(getState())) // получил state из reducer и отправил его в localStorage
 	}
 }
 
 
 // NOTES REDUCER =======================================================================================================
-
+const baseNoteID = 'id_1';
 const initialState: Array<NoteItemType> = [{
-	id: 'id_1',
+	id: baseNoteID,
 	title: 'Base note',
 	description: 'Base note description',
 }]
@@ -112,12 +101,11 @@ const initialState: Array<NoteItemType> = [{
 export const notesReducer = (state = initialState, action: NotesActionType): NoteStateType => {
 	switch (action.type) {
 		case NOTES_ACTION_TYPE_NAME.SET_NOTES: {
-			const notesForRender = action.notes.filter(note => note.id !== 'id_1')
-			/*console.log('action.notes reducer ', action.notes.filter(note => note.id !== 'id_1'))*/
-			if (action.notes.findIndex(note => note.id === 'id_1') !== -1) {
-				return [...notesForRender]
+			// если в localStorage есть базовая заметка, то она не добавляется, а если нет, то добавится
+			if (action.notes.findIndex(note => note.id === baseNoteID) !== -1) {
+				return [...action.notes]
 			} else {
-				return [...state, ...notesForRender]
+				return [...state, ...action.notes]
 			}
 		}
 		case NOTES_ACTION_TYPE_NAME.ADD_NOTES_ITEM: {
