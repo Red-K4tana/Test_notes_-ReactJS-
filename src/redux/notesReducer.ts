@@ -1,6 +1,7 @@
 import {v1} from "uuid";
 import {AppRootStateType, TypedDispatch} from "./store";
 import {ID_localStorage} from "../App";
+import {log} from "util";
 
 export type NoteItemType = {
 	id: string,
@@ -51,7 +52,7 @@ export const addNoteAC = (note: NoteItemType): addNoteActionType => {
 export const removeNoteAC = (noteID: string): removeNoteActionType => {
 	return {type: NOTES_ACTION_TYPE_NAME.REMOVE_NOTES_ITEM, noteID} as const
 }
-export const updateNotesAC = (noteID: string, title: string, description: string): updateNotesActionType => {
+export const updateNoteAC = (noteID: string, title: string, description: string): updateNotesActionType => {
 	return {type: NOTES_ACTION_TYPE_NAME.UPDATE_NOTES, notesID: noteID, title, description} as const
 }
 
@@ -62,48 +63,58 @@ export const addNoteTC = (note: NoteItemType) => (dispatch: TypedDispatch, getSt
 	const stateStringify = JSON.stringify(state)
 
 	localStorage.setItem(ID_localStorage, stateStringify)
-
 }
 export const removeNoteTC = (noteID: string) => (dispatch: TypedDispatch, getState: () => AppRootStateType) => {
 	dispatch(removeNoteAC(noteID))
 	const state = getState()
 	const stateStringify = JSON.stringify(state)
-
 	localStorage.setItem(ID_localStorage, stateStringify)
 
 }
-export const setNotesTC = () => (dispatch: TypedDispatch) => {
-	const stateFromLocalStorage: any = localStorage.getItem(ID_localStorage)
-	/*console.log('from ls ', JSON.parse(stateFromLocalStorage).notesReducer)*/
+export const updateNoteTC = (noteID: string, title: string, description: string) => (dispatch: TypedDispatch, getState: () => AppRootStateType) => {
+  dispatch(updateNoteAC(noteID, title, description))
+
+	localStorage.setItem(ID_localStorage, JSON.stringify(getState()))
+	/*const JSONStateFromLocalStorage: any = localStorage.getItem(ID_localStorage)
+	const ArrayStateFromLocalStorage: NoteStateType = JSON.parse(JSONStateFromLocalStorage).notesReducer
+
+	const newArray = ArrayStateFromLocalStorage.map(note => note.id === noteID
+		? {...note, title: title, description: description}
+		: note)
+
+	const newJSONArray = JSON.stringify(newArray)
+	localStorage.setItem(ID_localStorage, newJSONArray)*/
+}
+export const setNotesTC = () => (dispatch: TypedDispatch, getState: () => AppRootStateType) => {
+	const stateFromLocalStorage: any = localStorage.getItem(ID_localStorage) // достал state из LS
+	console.log('from ls ', JSON.parse(stateFromLocalStorage).notesReducer)
 
 	// если в localStorage пусто, то отправляем пустой массив в редьюсер
 	if (stateFromLocalStorage === null) {
 		dispatch(setNotesAC([]))
 	} else {
-		dispatch(setNotesAC(JSON.parse(stateFromLocalStorage).notesReducer))
+		dispatch(setNotesAC(JSON.parse(stateFromLocalStorage).notesReducer)) // отправил state в reducer
+		/*console.log('из LS thunk ', JSON.parse(stateFromLocalStorage).notesReducer)*/
+
+		localStorage.setItem(ID_localStorage, JSON.stringify(getState())) // получил state из reducer и отправил его в LS
 	}
-
-
 }
+
 
 // NOTES REDUCER =======================================================================================================
 
-const initialState: Array<NoteItemType> = []
+const initialState: Array<NoteItemType> = [{
+	id: 'id_1',
+	title: 'Base note',
+	description: 'Base note description',
+}]
 
 export const notesReducer = (state = initialState, action: NotesActionType): NoteStateType => {
 	switch (action.type) {
 		case NOTES_ACTION_TYPE_NAME.SET_NOTES: {
-			const baseNote: NoteItemType = {
-				id: 'id_1',
-				title: 'Base note',
-				description: 'Base note description',
-			};
-
-			const baseNoteBefore = action.notes.filter(note => note.id === baseNote.id)
-
-
-
-			return [baseNote, ...action.notes]
+			const notesForRender = action.notes.filter(note => note.id !== 'id_1')
+			console.log('action.notes reducer ', action.notes.filter(note => note.id !== 'id_1'))
+			return [...state, ...notesForRender]
 		}
 		case NOTES_ACTION_TYPE_NAME.ADD_NOTES_ITEM: {
 			return [...state, action.note]

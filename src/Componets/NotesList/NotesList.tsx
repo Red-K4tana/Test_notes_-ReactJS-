@@ -17,6 +17,7 @@ export const NotesList = (props: NotesListPropsType) => {
 
 	useEffect(()=> {
 		dispatch(setNotesTC())
+		console.log('setNotesTC произошло')
 	},[])
 
 	const notesForRender: Array<NoteItemType> = props.notes
