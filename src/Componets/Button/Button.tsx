@@ -6,7 +6,7 @@ type ButtonPropsType = {
     callback: () => void
     style?: string
     classNameSpanButton?: string
-    disabled?: boolean
+    svgIcon?: any
 }
 
 export const Button = React.memo( (props: ButtonPropsType) => {
@@ -18,7 +18,9 @@ export const Button = React.memo( (props: ButtonPropsType) => {
             >
                 {props.name}
             </button>
-            <span></span>
+            <span>
+              {props.svgIcon}
+            </span>
         </label>
     );
 });

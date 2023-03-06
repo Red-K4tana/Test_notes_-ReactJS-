@@ -3,8 +3,8 @@ import {NoteItemType} from "../../App";
 import {Note} from "../Note/Note";
 import {Button} from "../Button/Button";
 import {useAppDispatch} from "../../redux/store";
-import {v1} from "uuid";
 import {addNoteTC, setNotesTC} from "../../redux/notesReducer";
+import style from './NotesList.module.css'
 
 type NotesListPropsType = {
 	notes: Array<NoteItemType>
@@ -15,9 +15,9 @@ export const NotesList = (props: NotesListPropsType) => {
 	const dispatch = useAppDispatch()
 
 
-	useEffect(()=> {
+	useEffect(() => {
 		dispatch(setNotesTC())
-	},[])
+	}, [])
 
 	const notesForRender: Array<NoteItemType> = props.notes
 
@@ -26,17 +26,22 @@ export const NotesList = (props: NotesListPropsType) => {
 	}
 
 	return (
-		<div className={'notesList'}>
-			<Button name={'Add new note'} callback={createNewNote}/>
-			{notesForRender.map(note => {
-				return (
-					<Note key={note.id}
-					      id={note.id}
-					      title={note.title}
-					      description={note.description}
-					/>
-				)
-			})}
+		<div className={style.notes_list}>
+			<div className={style.add_new_note}>
+				<Button name={'Add new note'} callback={createNewNote}
+								style={style.add_new_note_button} classNameSpanButton={style.add_new_note_span_button}/>
+			</div>
+			<div className={style.notes_container}>
+				{notesForRender.map(note => {
+					return (
+						<Note key={note.id}
+									id={note.id}
+									title={note.title}
+									description={note.description}
+						/>
+					)
+				})}
+			</div>
 		</div>
 	);
 };

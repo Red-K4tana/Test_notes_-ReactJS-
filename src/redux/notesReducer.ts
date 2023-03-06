@@ -1,7 +1,6 @@
 import {v1} from "uuid";
 import {AppRootStateType, TypedDispatch} from "./store";
 import {ID_localStorage} from "../App";
-import {log} from "util";
 
 export type NoteItemType = {
 	id: string,
@@ -82,7 +81,7 @@ export const setNotesTC = () => (dispatch: TypedDispatch, getState: () => AppRoo
 	} else {
 		dispatch(setNotesAC(JSON.parse(stateFromLocalStorage).notesReducer)) // отправил state в reducer
 		// получил state из reducer и отправил его в localStorage
-		localStorage.setItem(ID_localStorage, JSON.stringify(getState()))
+		localStorage.setItem(ID_localStorage, JSON.stringify(getState())) // получил state из reducer и отправил его в localStorage
 	}
 }
 

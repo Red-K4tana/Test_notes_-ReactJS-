@@ -7,6 +7,7 @@ import {useAppDispatch} from "../../redux/store";
 import {removeNoteAC, removeNoteTC, updateNoteAC, updateNoteTC} from "../../redux/notesReducer";
 
 
+
 export type NotePropsType = {
 	id: string,
 	title: string,
@@ -36,16 +37,22 @@ export const Note = (props: NotePropsType) => {
 
 	return (
 		<div className={style.note_container}>
-			{
-				editMode
-					?
-					<Button name={'Save'} callback={saveNote}/>
-					:
-					<Button name={'Edit'} callback={editNote} />
-			}
-			<Button name={'Del'} callback={removeNote} />
-			<EditableTitle editMode={editMode} title={title} setTitleCallback={setTitle}/>
-			<EditableDescription editMode={editMode} description={description} setDescriptionCallback={setDescription}/>
+			<div className={style.note_title_and_buttons}>
+				<EditableTitle editMode={editMode} title={title} setTitleCallback={setTitle}/>
+				<div className={style.note_button_container}>
+					{
+						editMode
+							?
+							<Button name={'Save'} callback={saveNote}  style={style.save_note_button} classNameSpanButton={style.save_span_button}/>
+							:
+							<Button name={'Edit'} callback={editNote} style={style.edit_note_button} classNameSpanButton={style.edit_span_button}/>
+					}
+					<Button name={'Del'} callback={removeNote} style={style.remove_note_button} classNameSpanButton={style.remove_span_button}/>
+				</div>
+			</div>
+			<div className={style.note_description}>
+				<EditableDescription editMode={editMode} description={description} setDescriptionCallback={setDescription}/>
+			</div>
 		</div>
 	);
 };
