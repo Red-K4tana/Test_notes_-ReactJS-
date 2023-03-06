@@ -30,7 +30,6 @@ export type setNotesActionType = {
 }
 export type addNoteActionType = {
 	type: NOTES_ACTION_TYPE_NAME.ADD_NOTES_ITEM,
-	note: NoteItemType,
 }
 export type removeNoteActionType = {
 	type: NOTES_ACTION_TYPE_NAME.REMOVE_NOTES_ITEM,
@@ -46,8 +45,8 @@ export type updateNotesActionType = {
 export const setNotesAC = (notes: Array<NoteItemType>): setNotesActionType => {
 	return {type: NOTES_ACTION_TYPE_NAME.SET_NOTES, notes} as const
 }
-export const addNoteAC = (note: NoteItemType): addNoteActionType => {
-	return {type: NOTES_ACTION_TYPE_NAME.ADD_NOTES_ITEM, note} as const
+export const addNoteAC = (): addNoteActionType => {
+	return {type: NOTES_ACTION_TYPE_NAME.ADD_NOTES_ITEM} as const
 }
 export const removeNoteAC = (noteID: string): removeNoteActionType => {
 	return {type: NOTES_ACTION_TYPE_NAME.REMOVE_NOTES_ITEM, noteID} as const
@@ -58,8 +57,8 @@ export const updateNoteAC = (noteID: string, title: string, description: string)
 
 // NOTES THUNK-CREATORS ================================================================================================
 // добавление заметки
-export const addNoteTC = (note: NoteItemType) => (dispatch: TypedDispatch, getState: () => AppRootStateType) => {
-	dispatch(addNoteAC(note))
+export const addNoteTC = () => (dispatch: TypedDispatch, getState: () => AppRootStateType) => {
+	dispatch(addNoteAC())
 	localStorage.setItem(ID_localStorage, JSON.stringify(getState()))
 }
 // удаление заметки
@@ -107,7 +106,13 @@ export const notesReducer = (state = initialState, action: NotesActionType): Not
 			}
 		}
 		case NOTES_ACTION_TYPE_NAME.ADD_NOTES_ITEM: {
-			return [...state, action.note]
+			const newID = v1()
+			const newNote: NoteItemType = {
+				id: newID,
+				title: 'Title',
+				description: 'Note text',
+			}
+			return [...state, newNote]
 		}
 		case NOTES_ACTION_TYPE_NAME.REMOVE_NOTES_ITEM: {
 			return state.filter(note => note.id !== action.noteID)
