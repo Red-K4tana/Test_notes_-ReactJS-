@@ -51,7 +51,7 @@ export const Note = (props: NotePropsType) => {
 				</div>
 			</div>
 			<div className={style.note_description}>
-				<EditableDescription editMode={editMode} description={description} setDescriptionCallback={setDescription}/>
+			<EditableDescription editMode={editMode} description={description} setDescriptionCallback={setDescription}/>
 			</div>
 		</div>
 	);

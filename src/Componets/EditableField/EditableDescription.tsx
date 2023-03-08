@@ -1,5 +1,6 @@
 import React, {ChangeEvent, useState} from 'react';
 import style from './EditableFields.module.css';
+import {log} from "util";
 
 type EditableTitlePropsType = {
 	editMode: boolean
@@ -13,7 +14,6 @@ export const EditableDescription = (props: EditableTitlePropsType) => {
 		props.setDescriptionCallback(e.currentTarget.value)
 	}
 
-
 	return (
 		props.editMode
 			?
@@ -23,8 +23,9 @@ export const EditableDescription = (props: EditableTitlePropsType) => {
 				          onChange={changeDescription}>
 				</textarea></div>
 			:
-			<span>
-				{props.description}
-			</span>
-	);
+				<span className={style.span_description}>
+					{props.description}
+				</span>
+
+);
 };

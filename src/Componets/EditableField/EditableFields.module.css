@@ -3,3 +3,7 @@
 .textarea_description textarea {
     resize: none;
 }
+
+.span_description {
+    white-space: pre;
+}

@@ -9,6 +9,7 @@
     font-weight: 500;
     font-size: 18px;
     width: 350px;
+    height: fit-content;
     box-shadow: 0 0 10px #232323;
 }
 .note_container:hover {
