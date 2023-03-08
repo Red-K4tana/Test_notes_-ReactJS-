@@ -1,0 +1,20 @@
+.note_list_view {
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+    background-color: rgb(146, 171, 187);
+    border-radius: 10px;
+    color: #172d48;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 20px;
+    padding: 10px;
+
+}
+
+.note_line {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}

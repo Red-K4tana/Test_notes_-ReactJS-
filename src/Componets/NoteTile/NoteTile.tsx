@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import style from './Note.module.css'
+import style from './NoteTile.module.css'
 import {EditableTitle} from "../EditableField/EditableTitle";
 import {EditableDescription} from "../EditableField/EditableDescription";
 import {Button} from "../Button/Button";
@@ -15,7 +15,7 @@ export type NotePropsType = {
 }
 
 
-export const Note = (props: NotePropsType) => {
+export const NoteTile = (props: NotePropsType) => {
 	const dispatch = useAppDispatch()
 	const [editMode, setEditMode] = useState(false)
 

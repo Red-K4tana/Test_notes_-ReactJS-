@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {NoteItemType} from "../../App";
-import {Note} from "../Note/Note";
+import {NoteTile} from "../NoteTile/NoteTile";
 import {Button} from "../Button/Button";
 import {useAppDispatch} from "../../redux/store";
 import {addNoteTC, setNotesTC} from "../../redux/notesReducer";
@@ -11,7 +11,7 @@ type NotesListPropsType = {
 }
 
 
-export const NotesList = (props: NotesListPropsType) => {
+export const NotesBox = (props: NotesListPropsType) => {
 	const dispatch = useAppDispatch()
 
 
@@ -34,10 +34,10 @@ export const NotesList = (props: NotesListPropsType) => {
 			<div className={style.notes_container}>
 				{notesForRender.map(note => {
 					return (
-						<Note key={note.id}
-									id={note.id}
-									title={note.title}
-									description={note.description}
+						<NoteTile key={note.id}
+						          id={note.id}
+						          title={note.title}
+						          description={note.description}
 						/>
 					)
 				})}
