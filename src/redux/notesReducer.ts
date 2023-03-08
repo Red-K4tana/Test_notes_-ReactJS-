@@ -90,8 +90,8 @@ export const setNotesTC = () => (dispatch: TypedDispatch, getState: () => AppRoo
 const baseNoteID = 'id_1';
 const initialState: Array<NoteItemType> = [{
 	id: baseNoteID,
-	title: 'Base note',
-	description: 'Base note description',
+	title: 'Base note!!!',
+	description: 'Base note description!!!',
 }]
 
 export const notesReducer = (state = initialState, action: NotesActionType): NoteStateType => {

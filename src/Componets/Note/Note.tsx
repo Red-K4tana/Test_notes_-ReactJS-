@@ -38,7 +38,9 @@ export const Note = (props: NotePropsType) => {
 	return (
 		<div className={style.note_container}>
 			<div className={style.note_title_and_buttons}>
-				<EditableTitle editMode={editMode} title={title} setTitleCallback={setTitle}/>
+				<div className={style.note_title}>
+					<EditableTitle editMode={editMode} title={title} setTitleCallback={setTitle}/>
+				</div>
 				<div className={style.note_button_container}>
 					{
 						editMode
@@ -51,7 +53,7 @@ export const Note = (props: NotePropsType) => {
 				</div>
 			</div>
 			<div className={style.note_description}>
-			<EditableDescription editMode={editMode} description={description} setDescriptionCallback={setDescription}/>
+				<EditableDescription editMode={editMode} description={description} setDescriptionCallback={setDescription}/>
 			</div>
 		</div>
 	);
