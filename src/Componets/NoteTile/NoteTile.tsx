@@ -3,33 +3,39 @@ import style from './NoteTile.module.css'
 import {EditableTitle} from "../EditableField/EditableTitle";
 import {EditableDescription} from "../EditableField/EditableDescription";
 import {Button} from "../Button/Button";
-import {useAppDispatch} from "../../redux/store";
-import {removeNoteAC, removeNoteTC, updateNoteAC, updateNoteTC} from "../../redux/notesReducer";
+import {AppRootStateType, useAppDispatch} from "../../redux/store";
+import {
+	changeEditModeNoteAC,
+	NoteWithEditType,
+	removeNoteTC,
+	updateNoteTC
+} from "../../redux/notesReducer";
+import {useSelector} from "react-redux";
 
 
 
 export type NotePropsType = {
 	id: string,
-	title: string,
-	description: string,
 }
 
 
 export const NoteTile = (props: NotePropsType) => {
 	const dispatch = useAppDispatch()
-	const [editMode, setEditMode] = useState(false)
+	const note = useSelector<AppRootStateType, NoteWithEditType>(state => state.notesReducer
+		.filter(note => note.id === props.id)[0])
+
 
 	//=======================================================
-	const [description, setDescription] = useState(props.description)
-	const [title, setTitle] = useState(props.title)
+	const [description, setDescription] = useState(note.description)
+	const [title, setTitle] = useState(note.title)
 	//=======================================================
 
 	const saveNote = () => {
-		setEditMode(false)
+		dispatch(changeEditModeNoteAC(props.id,false))
 		dispatch(updateNoteTC(props.id, title, description))
 	}
 	const editNote = () => {
-		setEditMode(true)
+		dispatch(changeEditModeNoteAC(props.id,true))
 	}
 	const removeNote = () => {
 		dispatch(removeNoteTC(props.id))
@@ -39,11 +45,11 @@ export const NoteTile = (props: NotePropsType) => {
 		<div className={style.note_container}>
 			<div className={style.note_title_and_buttons}>
 				<div className={style.note_title}>
-					<EditableTitle editMode={editMode} title={title} setTitleCallback={setTitle}/>
+					<EditableTitle editMode={note.noteEditMode} title={title} setTitleCallback={setTitle}/>
 				</div>
 				<div className={style.note_button_container}>
 					{
-						editMode
+						note.noteEditMode
 							?
 							<Button name={'Save'} callback={saveNote}  style={style.save_note_button} classNameSpanButton={style.save_span_button}/>
 							:
@@ -53,7 +59,7 @@ export const NoteTile = (props: NotePropsType) => {
 				</div>
 			</div>
 			<div className={style.note_description}>
-				<EditableDescription editMode={editMode} description={description} setDescriptionCallback={setDescription}/>
+				<EditableDescription editMode={note.noteEditMode} description={description} setDescriptionCallback={setDescription}/>
 			</div>
 		</div>
 	);

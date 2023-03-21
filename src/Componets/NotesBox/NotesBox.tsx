@@ -32,15 +32,17 @@ export const NotesBox = (props: NotesListPropsType) => {
 								style={style.add_new_note_button} classNameSpanButton={style.add_new_note_span_button}/>
 			</div>
 			<div className={style.notes_container}>
-				{notesForRender.map(note => {
+
+				{
+					// MAP MAP MAP MAP MAP MAP MAP
+					notesForRender.map(note => {
 					return (
 						<NoteTile key={note.id}
 						          id={note.id}
-						          title={note.title}
-						          description={note.description}
 						/>
 					)
-				})}
+				})
+				}
 			</div>
 		</div>
 	);

@@ -34,14 +34,14 @@ function App() {
 	        viewMode
 		        ?
 		        <div className={style.navLinks} onClick={changeViewMode}>
-			        <NavLink to={'/'} className={style.link}>
-                Tiles view
+			        <NavLink to={'list_view'} className={style.link}>
+                List view
 			        </NavLink>
 		        </div>
 		        :
           <div className={style.navLinks} onClick={changeViewMode}>
-            <NavLink to={'list_view'} className={style.link}>
-              List view
+            <NavLink to={'/'} className={style.link}>
+              Tiles view
             </NavLink>
           </div>
         }
@@ -49,7 +49,9 @@ function App() {
       <>
         <Routes>
           <Route path={'/'} element={<NotesBox notes={notesPool} />}/>
-          <Route path={'/list_view'} element={<NoteListView notes={notesPool}/>}/>
+          <Route path={'/list_view'} element={<NoteListView notes={notesPool}
+                                                            viewMode={viewMode}
+                                                            changeViewModeCallback={setViewMode}/>}/>
         </Routes>
       </>
 
