@@ -18,7 +18,6 @@ export const NoteListView = (props: NotesListPropsType) => {
 	useEffect(() => {
 		dispatch(setNotesTC())
 	}, [])
-
 	const editNote = (noteID: string) => {
 		props.changeViewModeCallback(true)
 		setTimeout(()=>{
@@ -28,7 +27,6 @@ export const NoteListView = (props: NotesListPropsType) => {
 	const removeNote = (noteID: string) => {
 		dispatch(removeNoteTC(noteID))
 	}
-
 	if (props.viewMode) {
 		return <Navigate to={'/'} />
 	}
