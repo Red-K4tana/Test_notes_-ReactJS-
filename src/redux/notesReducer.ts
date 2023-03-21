@@ -61,14 +61,16 @@ export const changeEditModeNoteAC = (notesID: string, noteEditMode: boolean): ch
 // добавление заметки
 export const addNoteTC = () => (dispatch: TypedDispatch, getState: () => AppRootStateType) => {
 	dispatch(addNoteAC())
-	const notesWithoutEditMode: Array<NoteItemType>  = getState().notesReducer.map(note => ({id: note.id, title: note.title, description: note.description}))
+	const notesWithoutEditMode: Array<NoteItemType>  = getState().notesReducer
+		.map(note => ({id: note.id, title: note.title, description: note.description}))
 
 	localStorage.setItem(ID_localStorage, JSON.stringify(notesWithoutEditMode))
 }
 // удаление заметки
 export const removeNoteTC = (noteID: string) => (dispatch: TypedDispatch, getState: () => AppRootStateType) => {
 	dispatch(removeNoteAC(noteID))
-	const notesWithoutEditMode: Array<NoteItemType>  = getState().notesReducer.map(note => ({id: note.id, title: note.title, description: note.description}))
+	const notesWithoutEditMode: Array<NoteItemType>  = getState().notesReducer
+		.map(note => ({id: note.id, title: note.title, description: note.description}))
 
 	localStorage.setItem(ID_localStorage, JSON.stringify(notesWithoutEditMode))
 }
@@ -76,21 +78,26 @@ export const removeNoteTC = (noteID: string) => (dispatch: TypedDispatch, getSta
 export const updateNoteTC = (noteID: string, title: string, description: string) =>
 	(dispatch: TypedDispatch, getState: () => AppRootStateType) => {
   dispatch(updateNoteAC(noteID, title, description))
-		const notesWithoutEditMode: Array<NoteItemType>  = getState().notesReducer.map(note => ({id: note.id, title: note.title, description: note.description}))
+		const notesWithoutEditMode: Array<NoteItemType>  = getState().notesReducer
+			.map(note => ({id: note.id, title: note.title, description: note.description}))
 	localStorage.setItem(ID_localStorage, JSON.stringify(notesWithoutEditMode))
 }
 // наполнение state из localStorage
 export const setNotesTC = () => (dispatch: TypedDispatch, getState: () => AppRootStateType) => {
 	const stateFromLocalStorage: any = localStorage.getItem(ID_localStorage) // достал state из localStorage
+
 	// если в localStorage пусто, то отправляем пустой массив в reducer
 	if (stateFromLocalStorage === null) {
 		dispatch(setNotesAC([]))
 	} else {
-		const withEditMode: Array<NoteWithEditType> = JSON.parse(stateFromLocalStorage).map((note: NoteItemType) => ({...note, noteEditMode: false}))
+		const withEditMode: Array<NoteWithEditType> = JSON.parse(stateFromLocalStorage)
+			.map((note: NoteItemType) => ({...note, noteEditMode: false}))
 		dispatch(setNotesAC(withEditMode)) // отправил state в reducer
 
-		const notesWithoutEditMode: Array<NoteItemType> = getState().notesReducer.map(note => ({id: note.id, title: note.title, description: note.description}))
-		localStorage.setItem(ID_localStorage, JSON.stringify(notesWithoutEditMode)) // получил state из reducer и отправил его в localStorage
+		// получил state из reducer и отправил его в localStorage
+		const notesWithoutEditMode: Array<NoteItemType> = getState().notesReducer
+			.map(note => ({id: note.id, title: note.title, description: note.description}))
+		localStorage.setItem(ID_localStorage, JSON.stringify(notesWithoutEditMode))
 	}
 }
 
