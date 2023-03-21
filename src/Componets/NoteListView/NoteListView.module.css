@@ -9,9 +9,11 @@
     font-size: 18px;
     margin: 20px;
     padding: 10px;
-
+    box-shadow: 0 0 10px #232323;
 }
-
+.note_list_view:hover {
+    box-shadow: 0 0 5px #232323;
+}
 .note_line {
     display: flex;
     flex-direction: row;

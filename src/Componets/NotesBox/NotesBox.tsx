@@ -36,8 +36,6 @@ export const NotesBox = (props: NotesListPropsType) => {
 					return (
 						<NoteTile key={note.id}
 						          id={note.id}
-						          title={note.title}
-						          description={note.description}
 						/>
 					)
 				})}
