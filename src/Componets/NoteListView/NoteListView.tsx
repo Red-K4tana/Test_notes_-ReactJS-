@@ -15,18 +15,22 @@ type NotesListPropsType = {
 
 export const NoteListView = (props: NotesListPropsType) => {
 	const dispatch = useAppDispatch()
+	//запрашиваем заметки из local storage при рендере компонента
 	useEffect(() => {
 		dispatch(setNotesTC())
 	}, [])
+	//включаем режим редактирования заметки (сначала отрендерится нужный компонент, потом в нем включится редактирование на нужной заметке)
 	const editNote = (noteID: string) => {
 		props.changeViewModeCallback(true)
 		setTimeout(()=>{
 			dispatch(changeEditModeNoteAC(noteID,true))
 		}, 50)
 	}
+	//удаление заметки
 	const removeNote = (noteID: string) => {
 		dispatch(removeNoteTC(noteID))
 	}
+	//если при загрузке компонента viewMode === true, то этот компонент размонтируется, а NotesBox вмонтируется
 	if (props.viewMode) {
 		return <Navigate to={'/'} />
 	}

@@ -13,14 +13,13 @@ type NotesListPropsType = {
 
 export const NotesBox = (props: NotesListPropsType) => {
 	const dispatch = useAppDispatch()
-
-
+	//запрашиваем заметки из local storage при рендере компонента
 	useEffect(() => {
 		dispatch(setNotesTC())
 	}, [])
 
 	const notesForRender: Array<NoteItemType> = props.notes
-
+	//добавляем новую заметку
 	const createNewNote = () => {
 		dispatch(addNoteTC())
 	}

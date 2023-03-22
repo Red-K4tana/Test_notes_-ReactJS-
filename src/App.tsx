@@ -30,15 +30,17 @@ function App() {
     <div className={style.app}>
       <header className={style.appHeader}>
         <h1>Notes</h1>
-        {
+        { // условный рендеринг ссылки, переключающей на другой режим отображения заметок
 	        viewMode
 		        ?
+            // вид списком
 		        <div className={style.navLinks} onClick={changeViewMode}>
 			        <NavLink to={'list_view'} className={style.link}>
                 List view
 			        </NavLink>
 		        </div>
 		        :
+            // вид плитками
           <div className={style.navLinks} onClick={changeViewMode}>
             <NavLink to={'/'} className={style.link}>
               Tiles view
@@ -48,7 +50,9 @@ function App() {
       </header>
       <>
         <Routes>
+          {/*компонент - вид плитками*/}
           <Route path={'/'} element={<NotesBox notes={notesPool} />}/>
+          {/*компонент - вид списком*/}
           <Route path={'/list_view'} element={<NoteListView notes={notesPool}
                                                             viewMode={viewMode}
                                                             changeViewModeCallback={setViewMode}/>}/>
