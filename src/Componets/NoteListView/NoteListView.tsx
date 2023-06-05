@@ -22,6 +22,7 @@ export const NoteListView = (props: NotesListPropsType) => {
 	//включаем режим редактирования заметки (сначала отрендерится нужный компонент, потом в нем включится редактирование на нужной заметке)
 	const editNote = (noteID: string) => {
 		props.changeViewModeCallback(true)
+		dispatch(changeEditModeNoteAC(noteID,true))
 		setTimeout(()=>{
 			dispatch(changeEditModeNoteAC(noteID,true))
 		}, 50)
