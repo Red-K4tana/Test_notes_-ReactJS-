@@ -21,6 +21,7 @@ export const NoteListView = (props: NotesListPropsType) => {
 
 	const editNote = (noteID: string) => {
 		props.changeViewModeCallback(true)
+		dispatch(changeEditModeNoteAC(noteID,true))
 		setTimeout(()=>{
 			dispatch(changeEditModeNoteAC(noteID,true))
 		}, 50)
